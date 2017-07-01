@@ -1,0 +1,109 @@
+@import "node_modules/compass-mixins/lib/compass/css3";
+
+@mixin backgroundSvg($image, $width, $height: $width) {
+	background: url(//regretless.com/versions/2014Spring/images/#{$image}) no-repeat;
+	background-size: contain;
+	width: $width;
+	height: $height;
+}
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content; 
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  } 
+}
+@mixin animation($animation) {
+  -webkit-animation: #{$animation};
+	-moz-animation: #{$animation};
+	-ms-animation: #{$animation};
+	animation: #{$animation};
+}
+@mixin butterflyFluttering($butterflyWingHeight: 100px, $selector: "#butterfly") {
+#{$selector} {
+  
+  $flowerWidth: $butterflyWingHeight * 6;
+  
+  @include transform(rotateZ(20deg) rotate3d(0, 1, 0, 0deg) scale3d(0.5, 0.5, 0.5));
+  @include transform-origin(51% 50%);
+  @include transform-style(preserve-3d);
+  @include backgroundSvg("blue_flower_wo.svg", $flowerWidth);
+  
+  
+  margin: -$butterflyWingHeight 0 0 0;
+
+  position: relative;
+
+.wing {
+  
+  &:before, &:after {//stuf
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    @include background-image(radial-gradient(center, ellipse cover, rgba(0,0,0,0.35) 0%,rgba(0,0,0,0) 100%));
+    background: -ms-radial-gradient(center, ellipse cover, rgba(0,0,0,0.35) 0%,rgba(0,0,0,0) 100%);
+    box-shadow: 0 0 $butterflyWingHeight/2 rgba(0,0,0,0.25);
+  }
+  &:before {
+    top: $butterflyWingHeight * .6;
+    left: $butterflyWingHeight * 3.7;
+    width: $butterflyWingHeight * 1.5;
+    height: $butterflyWingHeight * 1.4;
+  }
+
+  position: absolute;
+  @include transform(rotateX(30deg)  translate3d(-(2*$butterflyWingHeight), 0px, 0px) rotate3d(0, 1, 0, 160deg));
+  transform-origin: top right;
+  -webkit-transform-origin: top right;
+  left: $butterflyWingHeight;
+  top: 50%;
+  margin-top: -$butterflyWingHeight;
+  
+  @include backgroundSvg("04_butterfly.svg", $butterflyWingHeight * 4);
+  background-position: $butterflyWingHeight * 2 0;
+
+  @include animation(rightwingani 6s ease-out infinite);
+  
+  &.left{
+    @include transform(rotateX(30deg) rotate3d(0, 1, 0, 0deg));
+    @include animation(leftwingani 6s ease-out infinite);
+    left: -$butterflyWingHeight;
+  }
+}
+} // end of selector
+@include keyframes(rightwingani) {
+	from {
+    @include transform(rotateX(30deg) translate3d(-(2*$butterflyWingHeight), 0px, 0px) rotate3d(0, 1, 0, 160deg));
+	}
+	50% {
+    @include transform(rotateX(30deg) translate3d(-(2*$butterflyWingHeight), 0px, 0px) rotate3d(0, 1, 0, 100deg));
+	}
+	to{
+    @include transform(rotateX(30deg) translate3d(-(2*$butterflyWingHeight), 0px, 0px) rotate3d(0, 1, 0, 160deg));
+	}
+}
+
+@include keyframes(leftwingani) {
+	from {
+    @include transform(rotateX(30deg) rotate3d(0, 1, 0, 0deg));
+	}
+	50% {
+    @include transform(rotateX(30deg) rotate3d(0, 1, 0, 80deg));
+	}
+	to{
+    @include transform(rotateX(30deg) rotate3d(0, 1, 0, 00deg));
+	}
+}
+
+}
+
+
+@include butterflyFluttering(80px);
